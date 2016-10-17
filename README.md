@@ -1,7 +1,10 @@
+Inspired by https://github.com/anishathalye/dotbot/issues/91
+
+
 ### Requirements
 - A Git repository
 - A Dotbot configuration file in that repository
-- Python 3
+- Python 3 with `requirements.txt` installed (`pip install -r requirements.txt`)
 
 
 ### Instructions
@@ -18,6 +21,7 @@ If your Python executable has a name other than Python (e.g. `python3` or `pytho
 #! /usr/bin/env sh
 python3.5 pre-commit "$@"
 ```
+
 
 ### Options
 Options are configurable through environment variables:
