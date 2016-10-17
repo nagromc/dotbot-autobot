@@ -1,0 +1,20 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+- clean:
+  - '~'
+  - ~/Library/Preferences
+  - ~/Library/LaunchAgents
+- link:
+    ~/.zprofile: zsh/zprofile
+    ~/.zshenv: zsh/zshenv
+    ~/.zshrc: zsh/zshrc
+- shell:
+  - - ./zsh/functions/compile-functions zsh/functions
+    - Compiling Zsh functions
+  - - git submodule update --init --recursive
+    - Updating submodules
+- link:
+    ~/.f1: .f1
+    ~/.f2: .f2
