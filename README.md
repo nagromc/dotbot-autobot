@@ -8,7 +8,7 @@ Inspired by https://github.com/anishathalye/dotbot/issues/91
 
 
 ### Instructions
-Save `pre-commit` and `prepare-commit-msg` to `.git/hooks` in your dotfiles directory. Alternatively, use a Git hook manager like [git-hooks](https://github.com/git-hooks/git-hooks).
+Save `pre-commit` and `prepare-commit-msg` to `.git/hooks` in your dotfiles directory. Alternatively, use a Git [hook manager](http://githooks.com).
 
 Then when a file is added to the index and committed, your Dotbot configuration file will be updated with a new "link" entry:
 ```
