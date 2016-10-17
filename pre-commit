@@ -1,3 +1,5 @@
+# vim: set filetype=python:
+
 """
 Automatically update your Dotbot config file when new files are committed in Git
 
@@ -50,8 +52,7 @@ star = lambda f: lambda *x: f(x)
 common_prefix = star(os.path.commonprefix)
 
 def file_in_any(filename, directories):
-    file_in = partial(common_prefix, filename)
-    return any(map(file_in, directories))
+    return any(map(filename.startswith, directories))
 
 def get_added_files(repo, directories):
     """
@@ -60,9 +61,10 @@ def get_added_files(repo, directories):
     directories = tmap(expand_path, directories)
     diff = repo.diff('HEAD', cached=True)
     patch = PatchSet(StringIO(diff.patch))
-    logger.debug(str(diff.patch))
+    logger.debug("Current patch:\n%s", str(diff.patch))
     logger.debug("Checking %s", directories)
-    added_files = (f.path for f in patch.added_files)
+    added_files = [f.path for f in patch.added_files]
+    logger.debug("All added files: %s", added_files)
     return [f for f in added_files if file_in_any(expand_path(f), directories)]
 
 def update_dotbot_conf(config_file, added_files):
@@ -101,7 +103,7 @@ def update_dotbot_conf(config_file, added_files):
             link_to = os.path.join("~", link_from)
             if link_to not in links_to:
                 new_task['link'][link_to] = link_from
-            logger.debug("%s: %s", link_to, link_from)
+                logger.debug("Adding link:\t%s: %s", link_to, link_from)
 
         # if we actually added any new links, update the config file
         if new_task['link']:
@@ -112,8 +114,10 @@ def update_dotbot_conf(config_file, added_files):
     except Exception as err:
         logger.debug(err, exc_info=True)
         cp(backup_file, config_file)
+        logger.debug("Restored backup file %s", backup_file)
     finally:
         os.remove(backup_file)
+        logger.debug("Removed backup file %s", backup_file)
 
 
 def parse_args(defaults):
@@ -129,10 +133,12 @@ def parse_args(defaults):
     parser.add_argument('-d', '--debug', dest='debug', action='store_true')
 
     args = parser.parse_args()
-    config_file = args.config_file[0]
-    directories = args.directories
     if args.debug:
         logger.setLevel(logging.DEBUG)
+    config_file = args.config_file[0]
+    logger.debug("Using config file %s", config_file)
+    directories = args.directories
+    logger.debug("Looking in directories %s", directories)
     return config_file, directories
 
 
@@ -147,6 +153,9 @@ def main():
 
     added_files = get_added_files(repo, directories)
     if added_files:
+        while config_file in added_files:
+            # don't add a link for the config file itself!
+            added_files.remove(config_file)
         logger.debug("Updating %s", added_files)
         update_dotbot_conf(config_file, added_files)
         repo.index.add(config_file)
