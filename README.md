@@ -25,7 +25,7 @@ Options are configurable through environment variables:
 - `AUTOBOT_DISABLED`: If this is non-empty, these hooks do nothing (default is empty).
 - `AUTOBOT_REPO_ROOT`: Set the root directory for the repository (default is `.`).
 - `AUTOBOT_DOTBOT_CONF`: Set an alternative name for your Dotbot config file (default is `dotbot.conf.yaml`).
-- `AUTOBOT_INCLUDE`: Colon-separated list of files to exclude (default is the value of `AUTOBOT_REPO_ROOT`). Basic wildcards (`*`, `**`, `?`, `[abc]`, and `[!abc]`) are allowed. Paths are first expanded using `glob.glob()`, and then matched using `Path.match()`, both in the Python standard library.
+- `AUTOBOT_INCLUDE`: Colon-separated list of files or directories files to exclude (default is the value of `$AUTOBOT_REPO_ROOT`). Basic wildcards (`*`, `**`, `?`, `[abc]`, and `[!abc]`) are allowed. Paths are first expanded using `glob.glob()`, and then matched using `Path.match()`, both in the Python standard library.
 - `AUTOBOT_EXCLUDE`: Same notes as above. The exclusion check is applied _after_ the inclusion check.
 - `AUTOBOT_DELETE_BACKUP`: If this is non-empty, delete the backup file when finished (not recommended).
 - `AUTOBOT_DEBUG`: If this is non-empty, activate extremely verbose debug-level logging.
