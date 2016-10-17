@@ -150,6 +150,7 @@ def main():
         logger.debug("Updating %s", added_files)
         update_dotbot_conf(config_file, added_files)
         repo.index.add(config_file)
+        repo.index.write()
     else:
         logger.debug("Nothing to update")
 
