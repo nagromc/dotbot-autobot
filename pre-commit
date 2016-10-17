@@ -26,13 +26,13 @@ SOFTWARE.
 """
 
 import os
-import yaml
 import operator as op
-from io import StringIO
 from functools import partial
+from io import StringIO
 from itertools import chain
-
 from shutil import copy2 as cp
+
+import yaml
 from pygit2 import Repository
 from unidiff import PatchSet
 
@@ -42,14 +42,8 @@ stream_handler = logging.StreamHandler()
 if not logger.hasHandlers():
     logger.addHandler(stream_handler)
 
-def compose(g, f):
-    gf = lambda *args: g(f(*args))
-    return gf
 
-tmap = compose(tuple, map)
-expand_path = compose(os.path.abspath, os.path.expanduser)
-star = lambda f: lambda *x: f(x)
-common_prefix = star(os.path.commonprefix)
+expand_path = lambda s: os.path.abspath(os.path.expanduser(s))
 
 def file_in_any(filename, directories):
     return any(map(filename.startswith, directories))
@@ -58,7 +52,7 @@ def get_added_files(repo, directories):
     """
     Get new files staged for commit
     """
-    directories = tmap(expand_path, directories)
+    directories = tuple(tmap(expand_path, directories))
     diff = repo.diff('HEAD', cached=True)
     patch = PatchSet(StringIO(diff.patch))
     logger.debug("Current patch:\n%s", str(diff.patch))
