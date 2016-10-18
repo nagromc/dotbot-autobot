@@ -9,7 +9,7 @@
 
 On Debian Jessie, run the following commands:
 
-    # apt-get install libgit2-dev python3-cffi python3-yaml
+    # apt-get install libgit2-dev python3-cffi python3-pip python3-yaml
     # pip3 install -r requirements.txt
 
 
